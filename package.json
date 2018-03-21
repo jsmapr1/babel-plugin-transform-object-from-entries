@@ -1,0 +1,59 @@
+{
+  "name": "babel-plugin-transform-object-from-entries",
+  "version": "1.0.0",
+  "description": "transform array of entries to object",
+  "main": "src/index.js",
+  "scripts": {
+    "build":
+      "rm -f test/transpiled_wrapper.js && babel -o test/transpiled_wrapper.js test/wrapper.js && npm run test",
+    "build:watch":
+      "./node_modules/.bin/nodemon -w src - w test --exec 'npm run build'",
+    "lint": "./node_modules/.bin/eslint --ext .js,.jsx src",
+    "lint:fix": "./node_modules/.bin/eslint --ext .js,.jsx --fix src/",
+    "precommit": "lint-staged",
+    "prettier":
+      "find src -type f -name '*.js' -or -name '*.jsx' -or -name '*.css'  -or -name '*.md'  | grep -vE 'node_modules|build' | xargs ./node_modules/.bin/prettier --write",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,md}": ["prettier --write", "lint:fix", "git add"]
+  },
+  "repository": {
+    "type": "git",
+    "url":
+      "git+https://github.com/ivikash/babel-plugin-transform-object-from-entries.git"
+  },
+  "keywords": ["babel-plugin"],
+  "author": "Vikash Agrawal <vikashagrawal1990@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url":
+      "https://github.com/ivikash/babel-plugin-transform-object-from-entries/issues"
+  },
+  "homepage":
+    "https://github.com/ivikash/babel-plugin-transform-object-from-entries#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "^23.0.0-alpha.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.19.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "husky": "^0.14.3",
+    "jest": "^22.4.2",
+    "lint-staged": "^6.0.0",
+    "nodemon": "^1.17.2",
+    "prettier": "^1.11.1",
+    "regenerator-runtime": "^0.11.1"
+  },
+  "dependencies": {},
+  "jest": {
+    "transform": {}
+  }
+}
