@@ -53,6 +53,24 @@ function objectFromEntriesPlugin({ types: t }) {
                       ),
                     ]),
 
+                    t.ifStatement(
+                      t.logicalExpression(
+                        '&&',
+                        t.identifier('array'),
+                        t.binaryExpression(
+                          '!==',
+                          t.memberExpression(
+                            t.identifier('array'),
+                            t.identifier('length'),
+                          ),
+                          t.numericLiteral(2),
+                        ),
+                      ),
+                      t.throwStatement(t.newExpression(t.identifier('Error'), [
+                        t.stringLiteral('InvalidArguments'),
+                      ])),
+                    ),
+
                     t.expressionStatement(t.assignmentExpression(
                       '=',
                       t.memberExpression(
