@@ -7,34 +7,78 @@ function objectFromEntriesPlugin({ types: t }) {
         enter(path, { file }) {
           file.set(TYPE, false);
         },
-        exit(path, { file, opts }) {
-          const objectFromEntriesId = file.get(TYPE);
+        exit(path, state) {
+          const { file, opts } = state;
 
+          const objectFromEntriesId = file.get(TYPE);
           if (!objectFromEntriesId && !path.scope.hasBinding(opts)) return;
 
-          const obj = t.identifier('obj');
+          if (objectFromEntriesId) {
+            const arr = t.identifier('arr');
 
-          const declare = t.functionExpression(
-            objectFromEntriesId,
-            [obj],
-            t.blockStatement([
-              t.variableDeclaration('var', [
-                t.variableDeclarator(
-                  t.identifier('fromEntries'),
-                  t.objectExpression([
-                    t.objectProperty(
-                      t.identifier('key'),
-                      t.stringLiteral('value'),
+            const declare = t.functionExpression(
+              objectFromEntriesId,
+              [arr],
+              t.BlockStatement([
+                t.variableDeclaration('var', [
+                  t.variableDeclarator(
+                    t.identifier('fromEntries'),
+                    t.objectExpression([]),
+                  ),
+                ]),
+
+                t.forStatement(
+                  t.variableDeclaration('var', [
+                    t.variableDeclarator(t.identifier('k'), t.numericLiteral(0)),
+                  ]),
+                  t.binaryExpression(
+                    '<',
+                    t.identifier('k'),
+                    t.memberExpression(
+                      t.identifier('arr'),
+                      t.identifier('length'),
                     ),
+                  ),
+                  t.unaryExpression('++', t.identifier('k')),
+
+                  t.BlockStatement([
+                    t.variableDeclaration('var', [
+                      t.variableDeclarator(
+                        t.identifier('array'),
+                        t.memberExpression(
+                          t.identifier('arr'),
+                          t.identifier('k'),
+                          true,
+                        ),
+                      ),
+                    ]),
+
+                    t.expressionStatement(t.assignmentExpression(
+                      '=',
+                      t.memberExpression(
+                        t.identifier('fromEntries'),
+                        t.memberExpression(
+                          t.identifier('array'),
+                          t.identifier('0'),
+                          true,
+                        ),
+                        true,
+                      ),
+                      t.memberExpression(
+                        t.identifier('array'),
+                        t.numericLiteral(1),
+                        true,
+                      ),
+                    )),
                   ]),
                 ),
+
+                t.returnStatement(t.identifier('fromEntries')),
               ]),
+            );
 
-              t.returnStatement(t.identifier('fromEntries')),
-            ]),
-          );
-
-          path.node.body.unshift(declare);
+            path.node.body.unshift(declare);
+          }
         },
       },
       CallExpression(path, { file }) {

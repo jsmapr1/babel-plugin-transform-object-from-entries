@@ -12,6 +12,6 @@ describe('babel-plugin-transform-object-from-entries-plugin', () => {
   it('should return an object with key and value', () => {
     const actual = [[1, 2], [3, 4], ['A', 'B']];
     const expected = { 1: 2, 3: 4, A: 'B' };
-    expect(wrapper.objectFromEntries(actual)).toBe(expected);
+    expect(wrapper.objectFromEntries(actual)).toEqual(expected);
   });
 });

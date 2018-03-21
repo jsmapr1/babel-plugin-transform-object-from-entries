@@ -1,7 +1,11 @@
-function _objectFromEntries(obj) {
-  var fromEntries = {
-    key: "value"
-  };
+function _objectFromEntries(arr) {
+  var fromEntries = {};
+
+  for (var k = 0; k < arr.length; ++k) {
+    var array = arr[k];
+    fromEntries[array[0]] = array[1];
+  }
+
   return fromEntries;
 }
 
