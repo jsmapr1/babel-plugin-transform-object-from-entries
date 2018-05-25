@@ -39,7 +39,7 @@ function objectFromEntriesPlugin({ types: t }) {
                       t.identifier('length'),
                     ),
                   ),
-                  t.unaryExpression('++', t.identifier('k')),
+                  t.updateExpression('++', t.identifier('k')),
 
                   t.BlockStatement([
                     t.variableDeclaration('var', [
